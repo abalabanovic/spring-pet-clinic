@@ -1,0 +1,31 @@
+FROM gradle:7.3.3-jdk17 AS builder
+
+WORKDIR /app
+
+#copy all gradle files
+COPY build.gradle .
+COPY settings.gradle .
+#Copy wrapper so we can call ./gradlew commands
+COPY gradlew .
+COPY gradle ./gradle
+#clean artifacts if they already exist
+RUN ./gradlew clean --no-daemon
+
+#copy app source code
+COPY src ./src
+
+# build app using Gradle
+RUN ./gradlew bootJar --no-daemon
+
+# Second stage: Create final image
+FROM alpine:latest
+
+RUN apk --no-cache add openjdk17
+
+WORKDIR /app
+
+COPY --from=builder /app/build/libs/spring-petclinic-*.jar ./app.jar
+
+EXPOSE 8080
+
+CMD ["java", "-jar", "app.jar"]

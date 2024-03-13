@@ -16,5 +16,3 @@ _site/
 *.css
 !petclinic.css
 info.txt
-Dockerfile_multistage
-docker-compose.copy.yml
