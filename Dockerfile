@@ -2,8 +2,6 @@ FROM alpine:latest
 
 RUN apk --no-cache add openjdk17
 
-ENV JAVA_HOME /usr/lib/jvm/default-jvm
-
 WORKDIR /app
 
 #Artifacts from Gradle
