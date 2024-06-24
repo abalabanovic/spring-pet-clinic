@@ -1,29 +1,27 @@
-version: "2.2"
+#Storing username and password in os env
 
 services:
   mysql:
-    image: mysql:8.2
-    restart: always
+    image: mysql:8.4
     ports:
       - "3306:3306"
     environment:
-      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
-      - MYSQL_USER=petclinic
-      - MYSQL_PASSWORD=
-      - MYSQL_DATABASE=
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=petclinic
     volumes:
-      - "/var/mysql:/var/lib/mysql"
+      - "./conf.d:/etc/mysql/conf.d:ro"
     profiles:
       - mysql
-
   postgres:
-    image: postgres:16.1
+    image: postgres:16.3
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_PASSWORD=
-      - POSTGRES_USER=
-      - POSTGRES_DB=
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_DB=petclinic
     profiles:
       - postgres
